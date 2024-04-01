@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Velha</title>
+
+    <style>
+
+        body{
+            background-color: rgb(25, 197, 197);
+            margin: 0;
+        }
+
+        .bloco{
+            width: 100px;
+            height: 100px;
+            border: 4px solid rgb(7, 145, 163);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 50px;
+        }
+
+        .container{
+            display: grid;
+            width: 100%;
+            height: 100%;
+            grid-template-columns: 100px 100px 100px;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+            justify-items: center;
+            margin-top: 3%;
+        }
+
+        .bloco:nth-child(1),
+        .bloco:nth-child(2),
+        .bloco:nth-child(3){
+            border-top: none;
+        }
+
+        .bloco:nth-child(1),
+        .bloco:nth-child(4),
+        .bloco:nth-child(7){
+            border-left: none;
+        }
+
+        .bloco:nth-child(3),
+        .bloco:nth-child(6),
+        .bloco:nth-child(9){
+            border-right: none;
+        }
+
+        .bloco:nth-child(7),
+        .bloco:nth-child(8),
+        .bloco:nth-child(9){
+            border-bottom: none;
+        }
+
+        .header{
+            display: grid;
+            align-items: center;
+            justify-items: center;
+            justify-content: center;
+            align-content: center;
+            background-color: rgb(4, 51, 51);
+            width: 100%;
+            height: 100%;
+            padding-bottom: 10px;
+        }
+
+        .resul{
+            display: inline-block
+        }
+        h2{
+            color:white;
+            margin:10px;
+            font-size: 20px;
+            margin-left: 20px;
+        }
+
+        .reinicia{
+            margin-left: 46%;
+            margin-top: 25px;
+            border-radius: 10px;
+            font-size: 20px;
+            border-width: 0px;
+            background-color: rgb(4, 51, 51);
+            color:white;
+            width: 110px;
+        }
+
+        .botaoescolha{
+            border-width: 0px;
+            background-color: rgb(25, 197, 197);
+            color: white;
+            width: 100px;
+            height: 25px;
+            border-radius: 10px;
+        }
+
+
+    </style>
+
+</head>
+<body>
+    
+    <div class="header">
+        <div>
+            <h1 style="color:white">Jogo da Velha</h1>
+        </div>
+        <div><h2>Escolha </h2></div>
+        <div>
+            <div class="resul">
+                <button class="botaoescolha" id="escolhaX" style="background-color: green;">X</button>
+            </div>
+            <div class="resul">
+                <button class="botaoescolha" id="escolhaO">O</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="mostrador" style="text-align: center;">
+        <h1 id="exibir">O vencedor foi: </h1>
+    </div>
+    <div class="container">
+        <div id="p1" class="bloco" onclick="jogar(this)" jogada=""></div>
+        <div id="p2" class="bloco" onclick="jogar(this)" jogada=""></div>
+        <div id="p3" class="bloco" onclick="jogar(this)" jogada=""></div>
+        <div id="p4" class="bloco" onclick="jogar(this)" jogada=""></div>
+        <div id="p5" class="bloco" onclick="jogar(this)" jogada=""></div>
+        <div id="p6" class="bloco" onclick="jogar(this)" jogada=""></div>
+        <div id="p7" class="bloco" onclick="jogar(this)" jogada=""></div>
+        <div id="p8" class="bloco" onclick="jogar(this)" jogada=""></div>
+        <div id="p9" class="bloco" onclick="jogar(this)" jogada=""></div>
+    </div>
+    <button class="reinicia" onclick="reiniciar()">Reiniciar</button>
+
+    <script>
+
+        var jogador = "X";
+        var vencedor = "";
+        var jogando  = true;
+        var contador=0;
+
+        var x = document.getElementById('escolhaX');
+        var o = document.getElementById('escolhaO');
+
+        x.addEventListener('click', function() {
+            jogador="X";
+            x.style.backgroundColor="green";
+            o.style.backgroundColor="rgb(25, 197, 197)";
+        });
+
+        o.addEventListener('click', function() {
+            jogador="O";
+            o.style.backgroundColor="green";
+            x.style.backgroundColor="rgb(25, 197, 197)";
+        });
+
+
+
+        function reiniciar(){
+            window.location.reload();
+        }
+
+        function jogar(celula){
+            if(jogando){
+                if(celula.innerHTML == ""){
+                    celula.innerHTML = jogador;
+                    celula.setAttribute("jogada", jogador);
+                    if(jogador == "X"){
+                        jogador = "O";
+                    }else if(jogador == "O"){
+                        jogador = "X";
+                    }else{
+                        jogador = "O";
+                    }
+                }
+                verificarVencedor();
+                exibirVencedor();
+            }
+        }
+
+        function verificarVencedor(){
+            var p1=document.getElementById("p1").getAttribute("jogada");
+            var p2=document.getElementById("p2").getAttribute("jogada");
+            var p3=document.getElementById("p3").getAttribute("jogada");
+            var p4=document.getElementById("p4").getAttribute("jogada");
+            var p5=document.getElementById("p5").getAttribute("jogada");
+            var p6=document.getElementById("p6").getAttribute("jogada");
+            var p7=document.getElementById("p7").getAttribute("jogada");
+            var p8=document.getElementById("p8").getAttribute("jogada");
+            var p9=document.getElementById("p9").getAttribute("jogada");
+
+            if((p1 == p4 && p1 == p7 && p1 != "") || (p1 == p2 && p1 == p3 && p1 != "") || (p1 == p5 && p1 == p9 && p1 != "")){
+                vencedor = p1;
+            }else if((p5 == p4 && p5 == p6 && p5 != "") || (p5 == p2 && p5 == p8 && p5 != "") || (p5 == p3 && p5 == p7 && p5 != "")){
+                vencedor = p5;
+            }else if((p9 == p8 && p9 == p7 && p9 != "") || (p9 == p3 && p9 == p6 && p9 != "")){
+                vencedor = p9;
+            }
+            contador += 1;
+        }
+
+        function exibirVencedor(){
+            if(vencedor == "X"){
+                var exibir = document.getElementById('exibir');
+                exibir.innerHTML += vencedor;
+                jogando = false;
+            }else if(vencedor == "O"){
+                var exibir = document.getElementById('exibir');
+                exibir.innerHTML += vencedor;
+                jogando = false;
+            }else if(contador == 9){
+                vencedor = "Empate"
+                var exibir = document.getElementById('exibir');
+                exibir.innerHTML = vencedor;
+                jogando = false;
+            }
+        }
+
+
+        var escolha1 = document.querySelector('#escolhaX');
+        escolha1.addEventListener('click', escolhaX);
+
+        var escolha2 = document.querySelector('#escolhaO');
+        escolha2.addEventListener('click', escolhaO);
+
+
+    </script>
+
+</body>
+</html>
